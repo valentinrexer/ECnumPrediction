@@ -1,3 +1,4 @@
+import pandas
 import pandas as pd
 from db_connect import *
 
@@ -66,3 +67,35 @@ def get_df_for_level(ec_1=-1, ec_2=-1, ec_3=-1, ec_4=-1):
     return pd.concat(dfs)
 
 
+
+
+def get_single_class_df(ec_1=-1, ec_2=-1, ec_3=-1, ec_4=-1):
+    df = get_df_for_level(ec_1, ec_2, ec_3, ec_4)
+    columns = ["EC_Single_Class", "Sequence"]
+
+    rows = []
+
+    if ec_1 == -1 and ec_2 == -1 and ec_3 == -1 and ec_4 == -1:
+        for entry in df.itertuples():
+            row = [entry[1], entry[5]]
+            rows.append(dict(zip(columns, row)))
+
+    elif ec_2 == -1 and ec_3 == -1 and ec_4 == -1:
+        for entry in df.itertuples():
+            row = [entry[2], entry[5]]
+            rows.append(dict(zip(columns, row)))
+
+    elif ec_3 == -1 and ec_4 == -1:
+        for entry in df.itertuples():
+            row = [entry[3], entry[5]]
+            rows.append(dict(zip(columns, row)))
+
+    else:
+        for entry in df.itertuples():
+            row = [entry[4], entry[5]]
+            rows.append(dict(zip(columns, row)))
+
+    return pandas.DataFrame(rows)
+
+
+print(get_single_class_df(1,3,4))
